@@ -1,13 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-
-// Extending the Request type to include a user field
-interface AuthenticatedRequest extends Request {
-  user?: {
-    userId: number;
-    username: string;
-  };
-}
+import { AuthenticatedRequest } from '../types/authenticated-request';
 
 export default function authenticate(
   req: AuthenticatedRequest,
@@ -24,7 +17,6 @@ export default function authenticate(
     });
     return;
   }
-  console.log(process.env.JWT_SECRET);
 
   try {
     const payload = jwt.verify(token, process.env.JWT_SECRET as string);

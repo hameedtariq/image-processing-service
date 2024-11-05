@@ -1,5 +1,6 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, OneToMany } from 'typeorm';
 import * as jwt from 'jsonwebtoken';
+import { Image } from './image.entity';
 
 @Entity()
 export class User {
@@ -14,6 +15,9 @@ export class User {
 
   @Column()
   password: string;
+
+  @OneToMany(() => Image, (image) => image.user)
+  images: Image[];
 
   // Method to generate JWT token
   generateJwtToken(): string {

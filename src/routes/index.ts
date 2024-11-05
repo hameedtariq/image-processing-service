@@ -1,6 +1,6 @@
 import RouteType from '../types/route.type';
 import authRouter from './auth.route';
-import imageProcessingRouter from './image-processing.route';
+import imageProcessingRouter from './images.route';
 
 const routes: RouteType[] = [
   {
@@ -8,7 +8,7 @@ const routes: RouteType[] = [
     router: authRouter,
   },
   {
-    path: '/image-processing',
+    path: '/images',
     router: imageProcessingRouter,
   },
 ];
