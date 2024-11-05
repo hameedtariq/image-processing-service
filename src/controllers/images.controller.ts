@@ -96,10 +96,50 @@ export const transformImage = async (
   const transformations = req.body.transformations;
   const imageBuffer = sharp(image.path);
 
-  const buffer = await imageBuffer.rotate().toBuffer();
+  if (!transformations) {
+    const apiResponse = {
+      data: {},
+      error: 'Please provide transformations',
+      message: '',
+    };
+    res.status(400).json(apiResponse);
+    return;
+  }
+
+  if (transformations.resize) {
+    const { width, height } = transformations.resize;
+    imageBuffer.resize(width, height);
+  }
+
+  if (transformations.crop) {
+    const { width, height, x, y } = transformations.crop;
+    imageBuffer.extract({ width, height, left: x, top: y });
+  }
+
+  if (transformations.rotate) {
+    imageBuffer.rotate(transformations.rotate);
+  }
+
+  if (transformations.filters?.grayscale) {
+    imageBuffer.grayscale();
+  }
+
+  if (transformations.filters?.sepia) {
+    imageBuffer.tint('rgb(112, 66, 20)');
+  }
+
+  if (transformations.filters?.blur) {
+    imageBuffer.blur();
+  }
+
+  if (transformations.filters?.sharpen) {
+    imageBuffer.sharpen();
+  }
+
+  // process the transformations
+  const buffer = await imageBuffer.toBuffer();
 
   // save the transformed image
-
   await fs.writeFile(image.path, buffer); // save the transformed image to the file system
 
   console.log('Transformations:', transformations);
