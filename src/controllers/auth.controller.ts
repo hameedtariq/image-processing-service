@@ -17,9 +17,7 @@ export const registerUser = async (
   user.password = await bcryptjs.hash(password, 10);
   await userRepository.save(user);
 
-  const token = jwt.sign({ userId: user.id }, 'mysecretkey', {
-    expiresIn: '1h',
-  });
+  const token = user.generateJwtToken();
 
   const apiResponse = {
     data: { token },
@@ -60,9 +58,7 @@ export const loginUser = async (
     return;
   }
 
-  const token = jwt.sign({ userId: user.id }, 'mysecretkey', {
-    expiresIn: '1h',
-  });
+  const token = user.generateJwtToken();
 
   const apiResponse = {
     data: { token },

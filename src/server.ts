@@ -2,6 +2,9 @@ import express from 'express';
 import routes from './routes';
 import 'reflect-metadata';
 import { AppDataSource } from './data-source';
+import { config } from 'dotenv';
+
+config();
 
 const app = express();
 
